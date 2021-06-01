@@ -3,25 +3,23 @@ import CalculatorButton from "./CalculatorButton";
 import "./styles.css";
 
 export default function Calculator() {
-  const [dispValue, setDispValue] = useState("0");
+  const [dispValue, setDispValue] = useState(0);
   const [memory, setMemory] = useState(null);
   const [operator, setOperator] = useState(null);
 
   const handleButtonClick = (content) => () => {
-    const number = parseFloat(dispValue);
-
     if (content === "AC") {
-      setDispValue("0");
+      setDispValue(0);
       setMemory(null);
       return;
     }
 
     if (content === "±") {
-      return setDispValue(number * -1);
+      return setDispValue(dispValue * -1);
     }
 
     if (content === "%") {
-      setDispValue((number / 100).toString());
+      setDispValue(dispValue / 100);
       setMemory(null);
       setOperator(null);
       return;
@@ -30,54 +28,51 @@ export default function Calculator() {
     const operatorChecker = () => {
       if (operator !== null) {
         if (operator === "+") {
-          setMemory(memory + parseFloat(dispValue));
+          setMemory(memory + dispValue);
         } else if (operator === "-") {
-          setMemory(memory - parseFloat(dispValue));
+          setMemory(memory - dispValue);
         } else if (operator === "×") {
-          setMemory(memory * parseFloat(dispValue));
+          setMemory(memory * dispValue);
         } else if (operator === "÷") {
-          setMemory(memory / parseFloat(dispValue));
+          setMemory(memory / dispValue);
         }
       } else {
-        setMemory(parseFloat(dispValue));
+        setMemory(dispValue);
       }
+      setDispValue(" ");
     };
 
     if (content === "+") {
       operatorChecker();
-      setDispValue("0");
       setOperator("+");
       return;
     }
 
     if (content === "-") {
       operatorChecker();
-      setDispValue("0");
       setOperator("-");
       return;
     }
     if (content === "×") {
       operatorChecker();
-      setDispValue("0");
       setOperator("×");
       return;
     }
     if (content === "÷") {
       operatorChecker();
-      setDispValue("0");
       setOperator("÷");
       return;
     }
 
     if (content === "=") {
       if (operator === "+") {
-        setDispValue((memory + parseFloat(dispValue)).toString());
+        setDispValue(memory + dispValue);
       } else if (operator === "-") {
-        setDispValue((memory - parseFloat(dispValue)).toString());
+        setDispValue(memory - dispValue);
       } else if (operator === "×") {
-        setDispValue((memory * parseFloat(dispValue)).toString());
+        setDispValue(memory * dispValue);
       } else if (operator === "÷") {
-        setDispValue((memory / parseFloat(dispValue)).toString());
+        setDispValue(memory / dispValue);
       }
       setMemory(null);
       setOperator(null);
@@ -87,28 +82,16 @@ export default function Calculator() {
     if (content === ".") {
       if (dispValue.toString().includes(".")) return;
 
-      setDispValue((dispValue + ".").toString());
+      setDispValue(dispValue + ".");
       return;
     }
 
-    if (dispValue[dispValue.length - 1] === ".") {
-      setDispValue(parseFloat(dispValue + content));
-    } else {
-      setDispValue(parseFloat(number + content));
-    }
-  };
-
-  const test = () => {
-    if (dispValue.toString().includes(".")) {
-      return Number(dispValue).toPrecision(4);
-    } else {
-      return dispValue;
-    }
+    setDispValue(parseFloat(dispValue + content));
   };
   return (
     <div className="calculator">
       <div className="top"></div>
-      <div className="display">{test()}</div>
+      <div className="display">{dispValue}</div>
       <div className="buttons">
         <CalculatorButton
           onButtonClick={handleButtonClick}

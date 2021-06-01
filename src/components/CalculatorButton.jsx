@@ -3,7 +3,11 @@ import "./styles.css";
 
 export default function CalculatorButton(props) {
   return (
-    <button className="calc-btn" style={props.style}>
+    <button
+      className="calc-btn"
+      style={props.style}
+      onClick={props.onButtonClick(props.content)}
+    >
       {props.content}
     </button>
   );
