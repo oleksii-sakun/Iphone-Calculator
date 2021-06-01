@@ -80,7 +80,7 @@ export default function Calculator() {
     }
 
     if (content === ".") {
-      if (dispValue.toString().includes(".")) return;
+      if (dispValue[dispValue.length - 1] === ".") return;
 
       setDispValue(dispValue + ".");
       return;
