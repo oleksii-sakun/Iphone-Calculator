@@ -3,7 +3,7 @@ import CalculatorButton from "./CalculatorButton";
 import "./styles.css";
 
 export default function Calculator() {
-  const [dispValue, setDispValue] = useState("0");
+  const [dispValue, setDispValue] = useState(0);
   const [operator, setOperator] = useState(null);
   const [memory, setMemory] = useState(null);
 
@@ -15,34 +15,24 @@ export default function Calculator() {
   };
 
   const handleFunctionForNumberButton = (content) => {
+    setDispValue(parseFloat(dispValue + content));
+  };
+
+  const handleFunctionForOperatorButton = (content) => {
     if (operator !== null) {
       if (operator === "+") {
-        setDispValue(+dispValue + +content);
+        setMemory(memory + dispValue);
       } else if (operator === "-") {
-        setDispValue(+dispValue - +content);
+        setMemory(memory - dispValue);
       } else if (operator === "×") {
-        setDispValue(+dispValue * +content);
+        setMemory(memory * dispValue);
       } else if (operator === "÷") {
-        setDispValue(+dispValue / +content);
+        setMemory(memory / dispValue);
       }
     } else {
-      setDispValue(parseFloat(dispValue + content));
+      setMemory(dispValue);
     }
-  };
-
-  const handleFunctionForPlusButton = (content) => {
-    setOperator(content);
-  };
-
-  const handleFunctionForMinusButton = (content) => {
-    setOperator(content);
-  };
-
-  const handleFunctionForDivisionButton = (content) => {
-    setOperator(content);
-  };
-
-  const handleFunctionForMultiplicationButton = (content) => {
+    setDispValue(" ");
     setOperator(content);
   };
 
@@ -56,8 +46,19 @@ export default function Calculator() {
 
   const handleFunctionForDoorButton = (content) => {
     if (operator === "+") {
-      setDispValue(memory);
+      setDispValue(memory + dispValue);
     }
+    if (operator === "-") {
+      setDispValue(memory - dispValue);
+    }
+    if (operator === "×") {
+      setDispValue(memory * dispValue);
+    }
+    if (operator === "÷") {
+      setDispValue(memory / dispValue);
+    }
+    setMemory(null);
+    setOperator(null);
   };
 
   const buttonSettings = [
@@ -79,7 +80,7 @@ export default function Calculator() {
     {
       content: "÷",
       style: { background: "#FF9F00" },
-      handleFunction: handleFunctionForDivisionButton,
+      handleFunction: handleFunctionForOperatorButton,
     },
     {
       content: "7",
@@ -96,7 +97,7 @@ export default function Calculator() {
     {
       content: "×",
       style: { background: "#FF9F00" },
-      handleFunction: handleFunctionForMultiplicationButton,
+      handleFunction: handleFunctionForOperatorButton,
     },
     {
       content: "4",
@@ -113,7 +114,7 @@ export default function Calculator() {
     {
       content: "-",
       style: { background: "#FF9F00" },
-      handleFunction: handleFunctionForMinusButton,
+      handleFunction: handleFunctionForOperatorButton,
     },
     {
       content: "1",
@@ -130,7 +131,7 @@ export default function Calculator() {
     {
       content: "+",
       style: { background: "#FF9F00" },
-      handleFunction: handleFunctionForPlusButton,
+      handleFunction: handleFunctionForOperatorButton,
     },
     {
       content: "0",
