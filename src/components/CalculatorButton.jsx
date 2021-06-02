@@ -6,7 +6,7 @@ export default function CalculatorButton(props) {
     <button
       className="calc-btn"
       style={props.style}
-      onClick={props.onButtonClick(props.content)}
+      onClick={() => props.onButtonClick(props.content)}
     >
       {props.content}
     </button>
