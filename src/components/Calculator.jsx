@@ -3,61 +3,61 @@ import CalculatorButton from "./CalculatorButton";
 import "./styles.css";
 
 export default function Calculator() {
-  const [dispValue, setDispValue] = useState(0);
+  const [a, setA] = useState(0);
+  const [b, setB] = useState(0);
   const [operator, setOperator] = useState(null);
-  const [memory, setMemory] = useState(null);
+  const [result, setResult] = useState(0);
 
-  const handleFunctionForACButton = () => setDispValue(0);
-  const handleFunctionForPlusMinusButton = () => setDispValue(dispValue * -1);
-  const handleFunctionForPercentButton = () => {
-    setDispValue(dispValue / 100);
-    setOperator(null);
-  };
+  const value = b ? b : a;
 
   const handleFunctionForNumberButton = (content) => {
-    setDispValue(parseFloat(dispValue + content));
+    if (!b && !a) {
+      setA(parseFloat(a + content));
+    } else {
+      setB(parseFloat(b + content));
+    }
+    if (a && b && result) {
+      setB(parseFloat(0 + content));
+      setA(result);
+    }
   };
+
+  console.log("a", a);
+  console.log("b", b);
+  console.log("operator", operator);
+  console.log("result", result);
 
   const handleFunctionForOperatorButton = (content) => {
     if (operator !== null) {
       if (operator === "+") {
-        setMemory(memory + dispValue);
+        setResult(a + b);
       } else if (operator === "-") {
-        setMemory(memory - dispValue);
+        setResult(a - b);
       } else if (operator === "×") {
-        setMemory(memory * dispValue);
+        setResult(a * b);
       } else if (operator === "÷") {
-        setMemory(memory / dispValue);
+        setResult(a / b);
       }
-    } else {
-      setMemory(dispValue);
     }
-    setDispValue(" ");
     setOperator(content);
-  };
-
-  const handleFunctionForPointButton = (content) => {
-    if (dispValue.toString().includes(".")) {
-      return;
-    } else {
-      setDispValue(dispValue + content);
-    }
   };
 
   const handleFunctionForDoorButton = (content) => {
     if (operator === "+") {
-      setDispValue(memory + dispValue);
+      setResult(a + b);
+    } else if (operator === "-") {
+      setResult(a - b);
+    } else if (operator === "×") {
+      setResult(a * b);
+    } else if (operator === "÷") {
+      setResult(a / b);
     }
-    if (operator === "-") {
-      setDispValue(memory - dispValue);
-    }
-    if (operator === "×") {
-      setDispValue(memory * dispValue);
-    }
-    if (operator === "÷") {
-      setDispValue(memory / dispValue);
-    }
-    setMemory(null);
+  };
+
+  const handleFunctionForACButton = (content) => {
+    setA(0);
+    setB(0);
+    setResult(0);
     setOperator(null);
   };
 
@@ -70,12 +70,12 @@ export default function Calculator() {
     {
       content: "±",
       style: { background: "#A6A6A6" },
-      handleFunction: handleFunctionForPlusMinusButton,
+      // handleFunction: handleFunctionForPlusMinusButton,
     },
     {
       content: "%",
       style: { background: "#A6A6A6" },
-      handleFunction: handleFunctionForPercentButton,
+      // handleFunction: handleFunctionForPercentButton,
     },
     {
       content: "÷",
@@ -140,7 +140,7 @@ export default function Calculator() {
     },
     {
       content: ".",
-      handleFunction: handleFunctionForPointButton,
+      // handleFunction: handleFunctionForPointButton,
     },
     {
       content: "=",
@@ -151,7 +151,7 @@ export default function Calculator() {
   return (
     <div className="calculator">
       <div className="top"></div>
-      <div className="display">{dispValue}</div>
+      <div className="display">{result ? result : value}</div>
       <div className="buttons">
         {buttonSettings.map((button) => (
           <CalculatorButton
