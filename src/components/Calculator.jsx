@@ -2,63 +2,117 @@ import React, { useState } from "react";
 import CalculatorButton from "./CalculatorButton";
 import "./styles.css";
 
+function switchNumberSign(num) {
+  if (num === "" || num === "0") {
+    return num;
+  }
+
+  if (num[0] === "-") {
+    return num.slice(1);
+  }
+
+  return "-" + num;
+}
+
+function addFloatPoint(num) {
+  if (!num.includes(".") && num !== "") {
+    return num + ".";
+  }
+  return num;
+}
+
+function parseBigNumber(num) {
+  const parsedValue =
+    num.toPrecision().length > 9 ? num.toExponential(3) : num.toString();
+  return parsedValue;
+}
+
 export default function Calculator() {
-  const [a, setA] = useState(0);
-  const [b, setB] = useState(0);
+  const [a, setA] = useState("");
+  const [b, setB] = useState("");
   const [operator, setOperator] = useState(null);
-  const [result, setResult] = useState(0);
 
-  const value = b ? b : a;
+  const displayValue = (b ? b : a) || 0;
 
-  const handleFunctionForNumberButton = (content) => {
-    if (!b && !a) {
-      setA(parseFloat(a + content));
-    } else {
-      setB(parseFloat(b + content));
-    }
-    if (a && b && result) {
-      setB(parseFloat(0 + content));
-      setA(result);
-    }
-  };
-
-  console.log("a", a);
-  console.log("b", b);
-  console.log("operator", operator);
-  console.log("result", result);
-
-  const handleFunctionForOperatorButton = (content) => {
-    if (operator !== null) {
-      if (operator === "+") {
-        setResult(a + b);
-      } else if (operator === "-") {
-        setResult(a - b);
-      } else if (operator === "×") {
-        setResult(a * b);
-      } else if (operator === "÷") {
-        setResult(a / b);
+  const handleNumberButton = (content) => {
+    if (operator) {
+      if (b.length > 7) {
+        return;
       }
+      setB((b === "0" ? "" : b) + content);
+    } else {
+      if (a.length > 7) {
+        return;
+      }
+      setA((a === "0" ? "" : a) + content);
     }
-    setOperator(content);
   };
 
-  const handleFunctionForDoorButton = (content) => {
+  const calculateExpression = () => {
+    const aNumber = Number(a);
+    const bNumber = b ? Number(b) : Number(a);
+    let result = "";
     if (operator === "+") {
-      setResult(a + b);
+      result = aNumber + bNumber;
     } else if (operator === "-") {
-      setResult(a - b);
+      result = aNumber - bNumber;
     } else if (operator === "×") {
-      setResult(a * b);
+      result = aNumber * bNumber;
     } else if (operator === "÷") {
-      setResult(a / b);
+      result = aNumber / bNumber;
     }
+    if (!operator) {
+      return;
+    }
+
+    const parsedValue = parseBigNumber(result);
+    setA(parsedValue);
+  };
+
+  const handleOperatorButton = (content) => {
+    if (operator) {
+      calculateExpression();
+      setOperator(content);
+      setB("");
+    } else {
+      setOperator(content);
+    }
+  };
+
+  const handleEquallyButton = (content) => {
+    calculateExpression();
+    setB("");
+    setOperator(null);
   };
 
   const handleFunctionForACButton = (content) => {
-    setA(0);
-    setB(0);
-    setResult(0);
+    setA("");
+    setB("");
     setOperator(null);
+  };
+
+  const handleFunctionForPlusMinusButton = () => {
+    if (b) {
+      setB(switchNumberSign(b));
+    } else {
+      setA(switchNumberSign(a));
+    }
+  };
+
+  const handleFunctionForPoinButton = () => {
+    if (b) {
+      setB(addFloatPoint(b));
+    } else {
+      setA(addFloatPoint(a));
+    }
+  };
+
+  const handleFunctionForPercentButton = () => {
+    if (b) {
+      setB(parseBigNumber(Number(b) / 100));
+    } else {
+      setA(parseBigNumber(Number(a) / 100));
+    }
   };
 
   const buttonSettings = [
@@ -70,88 +124,88 @@ export default function Calculator() {
     {
       content: "±",
       style: { background: "#A6A6A6" },
-      // handleFunction: handleFunctionForPlusMinusButton,
+      handleFunction: handleFunctionForPlusMinusButton,
     },
     {
       content: "%",
       style: { background: "#A6A6A6" },
-      // handleFunction: handleFunctionForPercentButton,
+      handleFunction: handleFunctionForPercentButton,
     },
     {
       content: "÷",
       style: { background: "#FF9F00" },
-      handleFunction: handleFunctionForOperatorButton,
+      handleFunction: handleOperatorButton,
     },
     {
       content: "7",
-      handleFunction: handleFunctionForNumberButton,
+      handleFunction: handleNumberButton,
     },
     {
       content: "8",
-      handleFunction: handleFunctionForNumberButton,
+      handleFunction: handleNumberButton,
     },
     {
       content: "9",
-      handleFunction: handleFunctionForNumberButton,
+      handleFunction: handleNumberButton,
     },
     {
       content: "×",
       style: { background: "#FF9F00" },
-      handleFunction: handleFunctionForOperatorButton,
+      handleFunction: handleOperatorButton,
     },
     {
       content: "4",
-      handleFunction: handleFunctionForNumberButton,
+      handleFunction: handleNumberButton,
     },
     {
       content: "5",
-      handleFunction: handleFunctionForNumberButton,
+      handleFunction: handleNumberButton,
     },
     {
       content: "6",
-      handleFunction: handleFunctionForNumberButton,
+      handleFunction: handleNumberButton,
     },
     {
       content: "-",
       style: { background: "#FF9F00" },
-      handleFunction: handleFunctionForOperatorButton,
+      handleFunction: handleOperatorButton,
     },
     {
       content: "1",
-      handleFunction: handleFunctionForNumberButton,
+      handleFunction: handleNumberButton,
     },
     {
       content: "2",
-      handleFunction: handleFunctionForNumberButton,
+      handleFunction: handleNumberButton,
     },
     {
       content: "3",
-      handleFunction: handleFunctionForNumberButton,
+      handleFunction: handleNumberButton,
     },
     {
       content: "+",
       style: { background: "#FF9F00" },
-      handleFunction: handleFunctionForOperatorButton,
+      handleFunction: handleOperatorButton,
     },
     {
       content: "0",
       style: { width: "122px", gridColumn: "1/span 2", borderRadius: "40px" },
-      handleFunction: handleFunctionForNumberButton,
+      handleFunction: handleNumberButton,
     },
     {
       content: ".",
-      // handleFunction: handleFunctionForPointButton,
+      handleFunction: handleFunctionForPoinButton,
     },
     {
       content: "=",
       style: { background: "#FF9F00" },
-      handleFunction: handleFunctionForDoorButton,
+      handleFunction: handleEquallyButton,
     },
   ];
   return (
     <div className="calculator">
       <div className="top"></div>
-      <div className="display">{result ? result : value}</div>
+      <div className="display">{displayValue}</div>
       <div className="buttons">
         {buttonSettings.map((button) => (
           <CalculatorButton
