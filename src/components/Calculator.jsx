@@ -1,16 +1,15 @@
 import React, { useState } from "react";
 import CalculatorButton from "./CalculatorButton";
 import "./styles.css";
+import { buttonSettings } from "./Config";
 
 function switchNumberSign(num) {
   if (num === "" || num === "0") {
     return num;
   }
-
   if (num[0] === "-") {
     return num.slice(1);
   }
-
   return "-" + num;
 }
 
@@ -69,7 +68,7 @@ export default function Calculator() {
     setA(parsedValue);
   };
 
-  const handleOperatorButton = (content) => {
+  const handleArifmethicButton = (content) => {
     if (operator) {
       calculateExpression();
       setOperator(content);
@@ -79,13 +78,32 @@ export default function Calculator() {
     }
   };
 
-  const handleEquallyButton = (content) => {
+  const handleOperatorButton = (content) => {
+    if (content === ".") {
+      return handleFunctionForPoinButton();
+    }
+    if (content === "±") {
+      return handleFunctionForPlusMinusButton();
+    }
+    if (content === "%") {
+      return handleFunctionForPercentButton();
+    }
+    if (content === "AC") {
+      return handleFunctionForACButton();
+    }
+    if (content === "=") {
+      return handleEquallyButton();
+    }
+    handleArifmethicButton(content);
+  };
+
+  const handleEquallyButton = () => {
     calculateExpression();
     setB("");
     setOperator(null);
   };
 
-  const handleFunctionForACButton = (content) => {
+  const handleFunctionForACButton = () => {
     setA("");
     setB("");
     setOperator(null);
@@ -115,93 +133,6 @@ export default function Calculator() {
     }
   };
 
-  const buttonSettings = [
-    {
-      content: "AC",
-      style: { background: "#A6A6A6" },
-      handleFunction: handleFunctionForACButton,
-    },
-    {
-      content: "±",
-      style: { background: "#A6A6A6" },
-      handleFunction: handleFunctionForPlusMinusButton,
-    },
-    {
-      content: "%",
-      style: { background: "#A6A6A6" },
-      handleFunction: handleFunctionForPercentButton,
-    },
-    {
-      content: "÷",
-      style: { background: "#FF9F00" },
-      handleFunction: handleOperatorButton,
-    },
-    {
-      content: "7",
-      handleFunction: handleNumberButton,
-    },
-    {
-      content: "8",
-      handleFunction: handleNumberButton,
-    },
-    {
-      content: "9",
-      handleFunction: handleNumberButton,
-    },
-    {
-      content: "×",
-      style: { background: "#FF9F00" },
-      handleFunction: handleOperatorButton,
-    },
-    {
-      content: "4",
-      handleFunction: handleNumberButton,
-    },
-    {
-      content: "5",
-      handleFunction: handleNumberButton,
-    },
-    {
-      content: "6",
-      handleFunction: handleNumberButton,
-    },
-    {
-      content: "-",
-      style: { background: "#FF9F00" },
-      handleFunction: handleOperatorButton,
-    },
-    {
-      content: "1",
-      handleFunction: handleNumberButton,
-    },
-    {
-      content: "2",
-      handleFunction: handleNumberButton,
-    },
-    {
-      content: "3",
-      handleFunction: handleNumberButton,
-    },
-    {
-      content: "+",
-      style: { background: "#FF9F00" },
-      handleFunction: handleOperatorButton,
-    },
-    {
-      content: "0",
-      style: { width: "122px", gridColumn: "1/span 2", borderRadius: "40px" },
-      handleFunction: handleNumberButton,
-    },
-    {
-      content: ".",
-      handleFunction: handleFunctionForPoinButton,
-    },
-    {
-      content: "=",
-      style: { background: "#FF9F00" },
-      handleFunction: handleEquallyButton,
-    },
-  ];
   return (
     <div className="calculator">
       <div className="top"></div>
@@ -209,9 +140,13 @@ export default function Calculator() {
       <div className="buttons">
         {buttonSettings.map((button) => (
           <CalculatorButton
-            key={button.content}
-            content={button.content}
-            onButtonClick={button.handleFunction}
+            key={button.value}
+            value={button.value}
+            onButtonClick={
+              button.type === "numberBtn"
+                ? handleNumberButton
+                : handleOperatorButton
+            }
             style={button.style}
           />
         ))}
