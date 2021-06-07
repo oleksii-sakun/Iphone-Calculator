@@ -146,6 +146,7 @@ export default function Calculator() {
         <div className="buttons">
           {buttonSettings.map((button) => (
             <CalculatorButton
+              className={button.className}
               key={button.value}
               value={button.value}
               onButtonClick={

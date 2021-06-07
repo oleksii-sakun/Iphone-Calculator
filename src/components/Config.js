@@ -72,7 +72,7 @@ export const buttonSettings = [
   },
   {
     value: "0",
-    style: { width: "100px", borderRadius: "40px", gridColumn: "1/span 2" },
+    className: "zero-btn",
     type: "numberBtn",
   },
   {
