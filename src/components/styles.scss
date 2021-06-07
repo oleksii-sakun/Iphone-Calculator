@@ -65,7 +65,6 @@
     }
   }
   .buttons-wrapper {
-    height: 50%;
     display: flex;
     width: 100%;
 
@@ -271,6 +270,21 @@
             font-size: 40px;
           }
         }
+
+        @media (min-width: 1700px) {
+          .calc-btn {
+            height: 120px;
+            width: 165px;
+            border-radius: 60px;
+            margin-bottom: 20px;
+            font-size: 50px;
+          }
+          .zero-btn {
+            height: 120px;
+            width: 360px;
+            font-size: 40px;
+          }
+        }
       }
     }
   }
@@ -320,6 +334,10 @@
 
       @media (min-height: 1000px) {
         padding-right: 15px;
+      }
+
+      @media (min-width: 1700px) {
+        padding-right: 28px;
       }
       @media (min-width: 568px) {
         .calc-btn {
@@ -378,6 +396,16 @@
           border-radius: 60px;
           margin-bottom: 20px;
           font-size: 40px;
+        }
+      }
+
+      @media (min-width: 1700px) {
+        .calc-btn {
+          height: 120px;
+          width: 165px;
+          border-radius: 60px;
+          margin-bottom: 20px;
+          font-size: 50px;
         }
       }
     }
