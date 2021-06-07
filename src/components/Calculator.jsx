@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import CalculatorButton from "./CalculatorButton";
 import "./styles.css";
-import { buttonSettings } from "./Config";
+import { buttonSettings, buttonSettingsLandscape } from "./Config";
 
 function switchNumberSign(num) {
   if (num === "" || num === "0") {
@@ -137,20 +137,28 @@ export default function Calculator() {
     <div className="calculator">
       <div className="top"></div>
       <div className="display">{displayValue}</div>
-      <div className="buttons">
-        {buttonSettings.map((button) => (
-          <CalculatorButton
-            key={button.value}
-            value={button.value}
-            onButtonClick={
-              button.type === "numberBtn"
-                ? handleNumberButton
-                : handleOperatorButton
-            }
-            style={button.style}
-          />
-        ))}
+      <div className="buttons-wrapper">
+        <div className="buttons-landscape">
+          {buttonSettingsLandscape.map((button) => (
+            <CalculatorButton key={button.value} value={button.value} />
+          ))}
+        </div>
+        <div className="buttons">
+          {buttonSettings.map((button) => (
+            <CalculatorButton
+              key={button.value}
+              value={button.value}
+              onButtonClick={
+                button.type === "numberBtn"
+                  ? handleNumberButton
+                  : handleOperatorButton
+              }
+              style={button.style}
+            />
+          ))}
+        </div>
       </div>
+
       <div className="bottom"></div>
     </div>
   );
